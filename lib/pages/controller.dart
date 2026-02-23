@@ -63,6 +63,7 @@ class Controller extends GetConnect {
         } else {
           url = entidad.cliente.trim().toLowerCase() == "feyro" ? entidad.urlApi : entidad.urlApiHttp;
           print("Esta usando produccion http");
+          
         }
       }
     } else {

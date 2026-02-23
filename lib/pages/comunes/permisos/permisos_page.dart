@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -9,11 +10,11 @@ import 'package:vientri/constants/app_fontsize.dart';
 import 'package:vientri/pages/controller.dart';
 import 'package:vientri/src/models/entidad.dart';
 import 'package:vientri/src/models/acceso.dart';
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_filex/open_filex.dart';
+import 'package:http/http.dart' as http;
 
 class PermisosPage extends StatefulWidget {
   final Entidad entidad;
@@ -42,6 +43,9 @@ class _PermisosPageState extends State<PermisosPage> {
   List<int> permisosUsuario = [];
   List<Acceso> habilitados = [];
   List<Acceso> noHabilitados = [];
+
+  bool isUpdating = false;
+  double downloadProgress = 0.0;
 
   @override
   void initState() {
@@ -230,6 +234,73 @@ class _PermisosPageState extends State<PermisosPage> {
               _footerUsuario(),
               const SizedBox(height: 24),
             ],
+          ),
+
+          if (isUpdating)
+          Positioned.fill(
+            child: Stack(
+              children: [
+                /// Blur real del fondo
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                  child: Container(
+                    color: Colors.grey.withOpacity(0.35),
+                  ),
+                ),
+
+                /// Popup centrado
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.all(24),
+                    margin: const EdgeInsets.symmetric(horizontal: 40),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 20,
+                          spreadRadius: 2,
+                        )
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Descargando actualización...",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.semantics.text.body,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: LinearProgressIndicator(
+                            value: downloadProgress,
+                            minHeight: 10,
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        Text(
+                          "${(downloadProgress * 100).toStringAsFixed(0)}%",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.semantics.text.secondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -432,47 +503,64 @@ class _PermisosPageState extends State<PermisosPage> {
   }
 
   Future<void> actualizarApp() async {
-    const url =
-        "https://drive.google.com/uc?export=download&id=1bDzDXu5QSjhdr6Ul-GvBlz90AHV0lC1d";
+    try {
+      final packageInfo = await PackageInfo.fromPlatform();
+      final currentVersion = packageInfo.version;
 
-    final dir = await getExternalStorageDirectory();
-    final filePath = "${dir!.path}/update.apk";
+      final response = await http.get(
+        Uri.parse(
+          "https://raw.githubusercontent.com/vlnrtta/vientri-updates/main/version.json",
+        ),
+      );
 
-    await Dio().download(
-      url,
-      filePath,
-      onReceiveProgress: (rec, total) {
-        if (total != -1) {
-          print("Progreso: ${(rec / total * 100).toStringAsFixed(0)}%");
-        }
-      },
-    );
+      if (response.statusCode != 200) {
+        print("Error al obtener version.json");
+        return;
+      }
 
-    await OpenFilex.open(filePath);
-  }
+      final data = jsonDecode(response.body);
 
-  /*Future<void> actualizarApp() async {
-    final packageInfo = await PackageInfo.fromPlatform();
-    final currentVersion = packageInfo.version;
+      final latestVersion = data["version"];
+      final apkUrl = data["apk_url"];
 
-    final response = await Dio().get("https://drive.google.com/file/d/1bDzDXu5QSjhdr6Ul-GvBlz90AHV0lC1d/view?usp=drive_link");
+      print("Versión actual: $currentVersion");
+      print("Última versión: $latestVersion");
 
-    final latestVersion = response.data["version"];
-    final apkUrl = response.data["apk_url"];
+      // 3️⃣ Comparar versiones
+      if (latestVersion != currentVersion) {
+        final dir = await getExternalStorageDirectory();
+        final filePath = "${dir!.path}/update.apk";
 
-    if (latestVersion != currentVersion) {
-      await downloadAndInstall(apkUrl);
+        setState(() {
+          isUpdating = true;
+          downloadProgress = 0.0;
+        });
+
+        await Dio().download(
+          apkUrl,
+          filePath,
+          onReceiveProgress: (rec, total) {
+            if (total != -1) {
+              setState(() {
+                downloadProgress = rec / total;
+              });
+            }
+          },
+        );
+
+        setState(() {
+          isUpdating = false;
+        });
+
+        await OpenFilex.open(filePath);
+      } else {
+        print("La app está actualizada");
+      }
+    } catch (e) {
+      print("Error actualizando app: $e");
     }
   }
 
-  Future<void> downloadAndInstall(String url) async {
-    final dir = await getExternalStorageDirectory();
-    final filePath = "${dir!.path}/update.apk";
-
-    await Dio().download(url, filePath);
-
-    await OpenFilex.open(filePath);
-  }*/
-
+ 
 }
 
