@@ -288,6 +288,7 @@ class _PermisosPageState extends State<PermisosPage> {
                         const SizedBox(height: 16),
 
                         Text(
+                          
                           "${(downloadProgress * 100).toStringAsFixed(0)}%",
                           style: TextStyle(
                             fontSize: 14,
