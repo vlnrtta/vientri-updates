@@ -1,0 +1,96 @@
+name: vientri
+description: "Sistema de gestión online."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  get: ^4.7.2
+  get_storage: ^2.1.1
+  http: ^1.4.0
+  intl: ^0.20.2
+  pin_code_fields: ^8.0.1
+  cupertino_icons: ^1.0.6
+  dotted_border: ^2.1.0
+  flutter_slidable: ^3.0.1
+  image_picker: ^1.1.2
+  fuzzywuzzy: ^1.2.0
+  font_awesome_flutter: ^10.7.0
+  flutter_svg: ^2.0.10+1
+  fluttertoast: ^8.2.5
+  url_launcher: ^6.3.1
+  shimmer: ^3.0.0
+  flutter_screenutil: ^5.9.3
+  html: ^0.15.4
+  mobile_scanner: ^6.0.2
+  path_provider: ^2.1.5
+  auto_size_text: ^3.0.0
+  pdf: ^3.11.3
+  printing: ^5.14.2
+  firebase_core: ^4.2.1
+  firebase_messaging: ^16.0.4
+  app_links: ^6.1.1
+  flutter_sound: ^9.30.0
+  permission_handler: ^12.0.1
+  animated_chat_action_button: ^1.0.3
+  speech_to_text: ^7.3.0
+  just_audio: ^0.10.5
+  dart_ping: ^9.0.1
+  esc_pos_utils_plus: ^2.0.4
+  print_usb: ^0.0.3
+  universal_html: ^2.3.0
+  package_info_plus: ^9.0.0
+  dio: ^5.9.1
+  open_filex: ^4.7.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter_icons:
+  android: true
+  ios: true
+  web:
+    generate: true
+    image_path: "assets/icon/app_icon.png"
+  image_path: "assets/icon/app_icon.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+      - assets/
+      - assets/gifs/
+      - assets/logos/og.png
+      - android/app/src/main/assets/iniciar_android.ppn
+
+  fonts:
+      - family: Onest
+        fonts:
+          - asset: assets/fonts/Onest-VariableFont_wght.ttf
+
+      - family: SF
+        fonts:
+          - asset: assets/fonts/sf-pro-text-9.ttf
+
+      - family: Poppins
+        fonts:
+          - asset: assets/fonts/Poppins-Bold.ttf
+
+      - family: OS
+        fonts:
+          - asset: assets/fonts/OpenSans-VariableFont_wdth,wght.ttf
+      
+      - family: Roboto
+        fonts:
+          - asset: assets/fonts/Roboto-VariableFont_wdth,wght.ttf
+
+      - family: Inter
+        fonts:
+          - asset: assets/fonts/Inter-VariableFont_opsz,wght.ttf
+        

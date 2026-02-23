@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "49632169054",
+    "project_id": "vientrinotification",
+    "storage_bucket": "vientrinotification.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:49632169054:android:abf99f1bcb4e77250c38cf",
+        "android_client_info": {
+          "package_name": "com.example.vientri"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCogUVy_IJuzKNdBT5VsvLf42IRBPYiMpo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
