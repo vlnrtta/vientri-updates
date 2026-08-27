@@ -1,7 +1,7 @@
 {
-  "version": "1.6.9",
+  "version": "1.7.0",
   "build": 1,
   "force_update": true,
-  "message": "Nueva versión disponible 26/08/26 14:40 v.1.6.9",
+  "message": "Nueva versión disponible 27/08/26 18:33 v.1.7.0",
   "apk_url": "https://github.com/vlnrtta/vientri-updates/releases/download/v1.0.0/app-release.apk"
 }
