@@ -1,8 +1,8 @@
 {
   "version": "1.7.7",
-  "version_fecha": "OCT01-1756",
-  "build": 202610011756,
+  "version_fecha": "OCT08-1113",
+  "build": 202610081113,
   "force_update": false,
-  "message": "Nueva versión disponible (OCT01-1756)",
+  "message": "Nueva versión disponible (OCT08-1113)",
   "apk_url": "https://github.com/vlnrtta/vientri-updates/releases/latest/download/app-release.apk"
 }
